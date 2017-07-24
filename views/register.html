@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/common.css">
+</head>
+<body>
+     <section>
+        <header>用户注册</header>
+        <section>  
+          <form>
+              <input type="text" name='phone' placeholder="手机号">
+              <input type="text" name='checkCode' placeholder="验证码">
+              <input type="password" name='password' placeholder="密码">
+              <input type="text" name='userName' placeholder="用户名">
+              <input type="button" value='注册'>
+          </form>
+        </section>
+     </section>
+</body>
+<script src='/jquery.js'></script>
+<script>
+    $('[type=button]').click(function(){
+        var data=$('form').serialize();
+        console.log(data)
+        $.ajax({
+            url:'http://127.0.0.1:8000/login',
+            method:'get',
+            data:data,
+            dataType:'jsonp',
+            success:function(res){
+    
+            },
+            error:function(res){
+
+            }
+        })
+    })
+</script>
+</html>
