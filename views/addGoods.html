@@ -13,12 +13,30 @@
         <header>添加商品</header>
         <section>
             <form>
-                <input type="number" name='goodName' placeholder="商品名称">
-                <input type="text" name='goodPrice' placeholder="商品价格">
+                <input type="text" name='goodName' placeholder="商品名称">
+                <input type="number" name='goodPrice' min='0' placeholder="商品价格">
                 <input type="button" value='添加'>
             </form>
         </section>
     </section>
 </body>
-<script src=''></script>
+<script src='/jquery.js'></script>
+<script>
+    $('[type=button]').click(function(){
+        var data=$('form').serialize();
+        $.ajax({
+            url:'http://127.0.0.1:8001/addGoods',
+            data:data,
+            dataType:'jsonp',
+            method:'post',
+            success:function(data){
+                alert(data.message)
+                location.href='http://127.0.0.1:8001/'
+            },
+            error:function(error){
+              console.log(error)
+            }
+        })
+    })
+</script>
 </html>

@@ -19,7 +19,7 @@ module.exports = function (app, mysql) {
             } else {
                 if (results[0].password == response.password) {
                      resData = { message: '登录成功', code: 0 }
-                     res.cookie('rememberme', results[0].username, { maxAge: 5000000, httpOnly: true })
+                     res.cookie('id', results[0].id, { maxAge: 5000000, httpOnly: true })
                 }else{
                      resData = { message: '密码不正确', code: 2 }
                 }

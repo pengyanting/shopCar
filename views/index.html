@@ -19,16 +19,69 @@
                 <th>操作</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>三生石上</td>
-                <td>22222</td>
-                <td><input type="button" value='加入购物车'></td>
-            </tr>
-        </tbody>
+        <tbody></tbody>
     </table>
-    <input type="button" value='添加商品'>
+    <input type="button" value='添加商品' id='toAdd'>
+    <input type="button" value='购物车' id='toCart'>
 </body>
+<script src='/jquery.js'></script>
+<script>
+    $("#toAdd").click(function () {
+        location.href = 'http://127.0.0.1:8001/addGoods'
+    })
+    $('#toCart').click(function () {
+        location.href = 'http://127.0.0.1:8001/cartList'
+    })
+    $.ajax({
+        url: 'http://127.0.0.1:8001/getGoods',
+        dataType: 'jsonp',
+        method: 'get',
+        success: function (data) {
+            var results = data.results;
+            if (JSON.stringify(results) == '[]') {
+                return;
+            }
+            var str = '';
+            for (var i = 0; i < results.length; i++) {
+                str += ' <tr>' +
+                    '<td>' + results[i].id + '</td>' +
+                    '<td>' + results[i].goodName + '</td>' +
+                    '<td>' + results[i].goodPrice + '</td>' +
+                    '<td><input type="button" value="加入购物车"></td>' +
+                    '</tr>'
+            }
+            $('tbody').html(str)
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+    $('tbody').on('click', '[type=button]', function () {
+        var cid = $(this).parent().siblings().eq(0).html();
+        var name = $(this).parent().siblings().eq(1).html();
+        var price = $(this).parent().siblings().eq(2).html();
+        $.ajax({
+            url: 'http://127.0.0.1:8001/addCart',
+            data: {
+                cid: cid,
+                name: name,
+                price: price
+            },
+            dataType: 'jsonp',
+            method: 'post',
+            success: function (data) {
+                if (data.code == 1) {
+                    alert(data.message);
+                    return;
+                }
+
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+</script>
 
 </html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>购物车</h1>
+    <table border="" width='100%'>
+        <thead>
+            <tr>
+                <th>全选</th>
+                <th>商品名称</th>
+                <th>商品价格</th>
+                <th>数量</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+<script src='/jquery.js'></script>
+<script>
+    $.ajax({
+        url: 'http://127.0.0.1:8001/cartList',
+        dataType: 'jsonp',
+        method: 'post',
+        success: function (data) {
+            coverHtml(data)
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    })
+    $('tbody').on('click', '#del', function () {
+        var id = $(this).parents('tr').attr('data-id');
+        $.ajax({
+            url: 'http://127.0.0.1:8001/delete',
+            data: {
+                id: id
+            },
+            method: 'post',
+            dataType: 'jsonp',
+            success: function (data) {
+                alert('删除成功')
+                coverHtml(data)
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    })
+    function coverHtml(data) {
+        var results = data.results;
+        if (JSON.stringify(results) == '[]') { return; }
+        var str = '';
+        for (var i = 0; i < results.length; i++) {
+            str += '<tr data-name="' + results[i].name + '" data-price="' + results[i].price + '" data-id="' + results[i].id + '" data-cid="' + results[i].cid + '">' +
+                '<th><input type="checkbox"/></th>' +
+                '<th>' + results[i].name + '</th>' +
+                '<th>' + results[i].price * results[i].quantity + '</th>' +
+                '<th >' +
+                '<span class="reduce">-</span>' +
+                '<span class="quantity">' + results[i].quantity + '</span>' +
+                '<span class="add">+</span>' +
+                '</th>' +
+                '<th ><input type="button" id="del" value="删除"/></th>' +
+                '</tr>'
+        }
+        $('tbody').html(str)
+    }
+    $('tbody').on('click', '.reduce', function () {
+        changeNum($(this), 'reduce')
+    })
+    $('tbody').on('click', '.add', function () {
+        changeNum($(this), 'add')
+    })
+    function changeNum(obj, type) {
+        var quantityBox = obj.siblings('.quantity')
+        var quantity = quantityBox.html()
+        if (type == 'reduce') {
+            var newQuantity = Number(quantity) - 1
+        } else {
+            var newQuantity = Number(quantity) + 1
+        }
+        if (newQuantity < 0) {
+            return;
+        }
+        quantityBox.html(newQuantity)
+        var cid = obj.parents('tr').attr('data-cid')
+        var name = obj.parents('tr').attr('data-name')
+        var price = obj.parents('tr').attr('data-price')
+        $.ajax({
+            url: 'http://127.0.0.1:8001/addCart',
+            data: {
+                cid: cid,
+                name: name,
+                price: price,
+                quantity: newQuantity
+            },
+            dataType: 'jsonp',
+            method: 'post',
+            success: function (data) {
+
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+</script>
+
+</html>
