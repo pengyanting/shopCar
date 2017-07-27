@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-25 12:04:15
+-- Generation Time: 2017-07-27 11:35:14
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,56 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `cart`
+--
+
+CREATE TABLE IF NOT EXISTS `cart` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `uid` char(16) NOT NULL,
+  `cid` char(16) NOT NULL,
+  `name` char(16) NOT NULL,
+  `price` char(16) NOT NULL,
+  `quantity` char(16) NOT NULL,
+  `status` char(16) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+
+--
+-- 转存表中的数据 `cart`
+--
+
+INSERT INTO `cart` (`id`, `uid`, `cid`, `name`, `price`, `quantity`, `status`) VALUES
+(6, '20', '2', 'qdqwqw', '12', '25', 'yes'),
+(7, '20', '3', 'qqq', '4', '18', 'yes'),
+(9, '20', '1', 'qdqwqw', '12', '3', 'no'),
+(16, '20', '4', 'ssss', '222', '6', 'no');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `goods`
+--
+
+CREATE TABLE IF NOT EXISTS `goods` (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `goodName` char(255) NOT NULL,
+  `goodPrice` char(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `goods`
+--
+
+INSERT INTO `goods` (`id`, `goodName`, `goodPrice`) VALUES
+(1, 'qdqwqw', '12'),
+(2, 'qdqwqw', '12'),
+(3, 'qqq', '4'),
+(4, 'ssss', '222');
 
 -- --------------------------------------------------------
 
