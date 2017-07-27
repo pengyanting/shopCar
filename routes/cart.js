@@ -56,7 +56,7 @@ module.exports = function (app, mysql) {
           queryAll(req,res)
     })
     var queryAll = function (req, res) {
-        mysql.query('select * from cart where uid = "' + req.cookies.id + '"', function (error, results, fields) {
+        mysql.query('select * from cart where uid = "' + req.cookies.id + '" and status="no"', function (error, results, fields) {
             if (error) throw error
             results = JSON.parse(JSON.stringify(results).replace('RowDataPacket', ''));
             res.status(200).jsonp({
@@ -75,4 +75,14 @@ module.exports = function (app, mysql) {
             }
         })
     })
+   app.post('/compute',urlencodedParser,function(req,res){
+       mysql.query('UPDATE cart SET status="yes" WHERE id in ('+req.body.id+')',function(error,results,fields){
+           if (error) throw error
+           console.log(results)
+           results=JSON.parse(JSON.stringify(results).replace('OkPacket'));
+           if(results.affectedRows){
+               queryAll(req,res)
+           }
+       })
+   })
 }

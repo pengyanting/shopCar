@@ -13,7 +13,7 @@
     <table border="" width='100%'>
         <thead>
             <tr>
-                <th>全选</th>
+                <th>全选<input type="checkbox" name='all'></th>
                 <th>商品名称</th>
                 <th>商品价格</th>
                 <th>数量</th>
@@ -22,6 +22,8 @@
         </thead>
         <tbody></tbody>
     </table>
+    <input type="button" class='compute' value='结算'>
+    <div class='total'>0.00</div>
 </body>
 <script src='/jquery.js'></script>
 <script>
@@ -60,9 +62,9 @@
         var str = '';
         for (var i = 0; i < results.length; i++) {
             str += '<tr data-name="' + results[i].name + '" data-price="' + results[i].price + '" data-id="' + results[i].id + '" data-cid="' + results[i].cid + '">' +
-                '<th><input type="checkbox"/></th>' +
+                '<th><input type="checkbox" name="check"/></th>' +
                 '<th>' + results[i].name + '</th>' +
-                '<th>' + results[i].price * results[i].quantity + '</th>' +
+                '<th class="allPrice">' + results[i].price * results[i].quantity + '</th>' +
                 '<th >' +
                 '<span class="reduce">-</span>' +
                 '<span class="quantity">' + results[i].quantity + '</span>' +
@@ -94,6 +96,8 @@
         var cid = obj.parents('tr').attr('data-cid')
         var name = obj.parents('tr').attr('data-name')
         var price = obj.parents('tr').attr('data-price')
+        obj.parent().siblings().eq(2).html(price*newQuantity)
+        total();
         $.ajax({
             url: 'http://127.0.0.1:8001/addCart',
             data: {
@@ -112,7 +116,44 @@
             }
         })
     }
-
+    $('[name=all]').click(function () {
+        var self = $(this);
+        $('input[name="check"]').each(function () {
+            $(this).prop("checked", self.is(':checked'));
+        });
+        total()
+    })
+    function total(){
+        var total=0;
+        $('input[name=check]:checked').each(function(){
+            total+=parseFloat($(this).parent().siblings().eq(1).html())
+        })
+        $('.total').html('￥'+total+'.00')
+    }
+    $('tbody').on('click','[name=check]',function(){
+        total();
+    })
+    $('.compute').click(function(){
+        var id=[];
+        $('input[name=check]:checked').each(function(){
+            id.push($(this).parents('tr').attr('data-id'))
+        }) 
+        $.ajax({
+            url:'http://127.0.0.1:8001/compute',
+            data:{
+              id:JSON.stringify(id).replace('[','').replace(']','')
+            },
+            dataType:'jsonp',
+            method:'post',
+            success:function(data){
+              coverHtml(data)
+               $('.total').html('￥0.00')
+            },
+            error:function(error){
+              console.log(error)
+            }
+        })
+    })
 </script>
 
 </html>

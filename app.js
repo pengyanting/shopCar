@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //入口
 app.get("/", function (req, res) {
-    if (req.cookies.id==undefined) {
+    if (req.cookies.rememberme==undefined) {
          res.redirect('login');
     }else{
          res.render("index");
@@ -31,4 +31,4 @@ mysql.connect();
 //引入路由
 var routers = require('./routes/index.js');
 routers(app, mysql)
-app.listen(8001);
+app.listen(8001); 
