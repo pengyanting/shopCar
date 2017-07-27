@@ -11,21 +11,18 @@ module.exports = function (app, mysql) {
             })
             return;
         }
-        console.log(req.body.cid)
         mysql.query('select * from cart where cid="' + req.body.cid + '"', function (error, results, fields) {
             if (error) throw error
             results = JSON.parse(JSON.stringify(results).replace('RowDataPacket', ''));
             var cid = req.body.cid;
             var name = req.body.name;
             var price = req.body.price;
-            console.log(results)
+            console.log(JSON.stringify(results) == '[]')
             if (JSON.stringify(results) == '[]') {//第一次加入购物车
                 var sql = 'insert into `cart`(`uid`,`cid`,`name`,`price`,`quantity`,`status`) values ("' + uid + '","' + cid + '","' + name + '","' + price + '","1","no")';
             } else {
-                var newQuantity=req.body.quantity
-                var quantity =newQuantity?newQuantity: Number(results[0].quantity) + 1;
-                console.log(quantity)
-                console.log(results[0].id)
+                var newQuantity = req.body.quantity
+                var quantity = newQuantity ? newQuantity : Number(results[0].quantity) + 1;
                 var sql = 'UPDATE `cart` SET `quantity` = "' + quantity + '" WHERE `id` = ' + results[0].id
             }
             insert(res, sql)
@@ -53,7 +50,7 @@ module.exports = function (app, mysql) {
         }
     })
     app.post('/cartList', function (req, res) {
-          queryAll(req,res)
+        queryAll(req, res)
     })
     var queryAll = function (req, res) {
         mysql.query('select * from cart where uid = "' + req.cookies.id + '" and status="no"', function (error, results, fields) {
@@ -71,18 +68,18 @@ module.exports = function (app, mysql) {
             if (error) throw error
             results = JSON.parse(JSON.stringify(results).replace('RowDataPacket', ''));
             if (results.affectedRows == 1) {
-                queryAll(req,res)
+                queryAll(req, res)
             }
         })
     })
-   app.post('/compute',urlencodedParser,function(req,res){
-       mysql.query('UPDATE cart SET status="yes" WHERE id in ('+req.body.id+')',function(error,results,fields){
-           if (error) throw error
-           console.log(results)
-           results=JSON.parse(JSON.stringify(results).replace('OkPacket'));
-           if(results.affectedRows){
-               queryAll(req,res)
-           }
-       })
-   })
+    app.post('/compute', urlencodedParser, function (req, res) {
+        mysql.query('UPDATE cart SET status="yes" WHERE id in (' + req.body.id + ')', function (error, results, fields) {
+            if (error) throw error
+            console.log(results)
+            results = JSON.parse(JSON.stringify(results).replace('OkPacket'));
+            if (results.affectedRows) {
+                queryAll(req, res)
+            }
+        })
+    })
 }

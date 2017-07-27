@@ -6,31 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/common.css">
 </head>
+<style>
+    body {
+        background: #fff;
+    }
+</style>
 
 <body>
-    <h1>商品展示</h1>
-    <table border="" width='100%'>
-        <thead>
-            <tr>
-                <th>序号</th>
-                <th>商品名称</th>
-                <th>商品价格</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <input type="button" value='添加商品' id='toAdd'>
-    <input type="button" value='购物车' id='toCart'>
+    <header class='head'>
+        <h4>天天购物</h4>
+        <div class='head_right'>
+            <img src="/imgsource/my-head.png" alt="">
+            <span class='username'></span>
+            <input type="button" class='btn logout' value='退出'>
+        </div>
+    </header>
+    <section class='page'>
+        <div class='page-side'>
+            <header>
+                <h3>商品展示</h3>
+               <div>
+                    <input type="button" value='添加商品' id='toAdd' class='btn'>
+                <input type="button" value='购物车' id='toCart' class='btn'>
+               </div>
+            </header>
+            <table border="" rules=cols width='90%'>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>商品名称</th>
+                        <th>商品价格</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
 </body>
 <script src='/jquery.js'></script>
 <script>
+    $('.username').html(localStorage.getItem('username'))
     $("#toAdd").click(function () {
         location.href = 'http://127.0.0.1:8001/addGoods'
     })
     $('#toCart').click(function () {
         location.href = 'http://127.0.0.1:8001/cartList'
+    })
+    $('.logout').click(function () {
+        $.ajax({
+            url: 'http://127.0.0.1:8001/logout',
+            dataType: 'jsonp',
+            method: 'get',
+            success: function (data) {
+                if (data.code == 0) {
+                    location.href = 'http://127.0.0.1:8001/login'
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
     })
     $.ajax({
         url: 'http://127.0.0.1:8001/getGoods',
@@ -47,7 +85,7 @@
                     '<td>' + results[i].id + '</td>' +
                     '<td>' + results[i].goodName + '</td>' +
                     '<td>' + results[i].goodPrice + '</td>' +
-                    '<td><input type="button" value="加入购物车"></td>' +
+                    '<td><input type="button" value="加入购物车" class="btn" style="margin:10px 0;"></td>' +
                     '</tr>'
             }
             $('tbody').html(str)

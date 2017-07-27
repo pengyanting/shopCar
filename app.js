@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //入口
 app.get("/", function (req, res) {
-    if (req.cookies.rememberme==undefined) {
+    if (req.cookies.id==undefined) {
          res.redirect('login');
     }else{
          res.render("index");

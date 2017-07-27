@@ -15,3 +15,134 @@ img{
 }
 
 /*注册*/
+    body{
+        background: #494C5D;
+    }
+    .container{
+        width: 250px;
+        height: 300px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    .hd_title{
+        font-size: 26px;
+        color: #fff;
+        margin-bottom:10px;
+        text-align: center;
+    }
+    .box{
+        width: 100%;
+        border: 1px solid #f2f2f2;
+        background: #fff;
+        border-radius:10px;
+        padding: 10px 15px;
+    }
+    .box input{
+        width: 100%;
+        height: 40px;
+        border: none;
+        border-bottom:1px solid #ccc;
+        outline: none;
+        padding: 5px;
+    }
+    .btn{
+        height: 30px;
+        background:#00B957;
+        color: #fff;
+        margin:20px 0; 
+        cursor: pointer;
+        border-radius:4px; 
+        border: none;
+        outline: none;
+        padding: 0 10px;
+    }
+    .goLogin,.goRegister{
+        color: #ccc;
+        font-size:12px;
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin-bottom:10px;
+    }
+    .head{
+        width: 100%;
+        height: 50px;
+        background: #494C5D;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+    .head h4{
+
+    }
+    .head img{
+        width: 40px;
+        height: 40px;
+    }
+     .head .btn{
+         margin: 0;
+     }
+     .head .head_right{
+         display: flex;
+         align-items: center;
+     }
+     .head_right span{
+         margin: 0 10px;
+     }
+     .page{
+         width: 100%;
+         padding: 30px;
+     }
+     .page-side{
+         width: 100%;
+         border: 1px solid #f2f2f2;
+         border-radius:4px;
+     }
+     .page-side header{
+         display: flex;
+         height: 40px;
+         background: #E5E5E5;
+         align-items: center;
+         justify-content: space-between;
+         padding: 0 15px;
+     }
+    table{
+        margin: 20px 15px;
+    }
+
+    th,td{
+        text-align: center;
+        margin: 0;
+        border: 1px solid #f2f2f2;
+        height: 40px;
+    }
+    .addBox{
+        width: 100%;
+        padding: 20px;
+    }
+    .addBox input:not(.btn){
+       width: 300px;
+       height: 30px;
+       border-radius:3px;
+       margin-bottom:10px; 
+       border: 1px solid #f2f2f2;
+       outline: none;
+       padding: 5px;
+    }
+    .reduce,.add{
+        padding:5px 10px;
+        border: 1px solid #f2f2f2;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+    .quantityBox{
+        /*display: flex;
+        justify-content: space-around;
+        align-items: center;*/
+    }

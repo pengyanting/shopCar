@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="/common.css">
 </head>
 <body>
-     <section>
-        <header>用户登录</header>
-        <section>  
+     <section class='container'>
+        <header class='hd_title'>用户登录</header>
+        <section class='box'>  
           <form>
-              <input type="text" name='userName' placeholder="用户名">
-              <input type="password" name='password' placeholder="密码">
-              <input type="button" value='登录'>
+              <input type="text" name='userName'  placeholder="用户名">
+              <input type="password" name='password' placeholder="密码" >
+              <input type="button"  class='btn' value='登录'>
           </form>
+           <a class='goRegister' href='http://127.0.0.1:8001/register'>没有账号？注册</a>
         </section>
      </section>
 </body>
@@ -23,6 +24,7 @@
 <script>
     $('[type=button]').click(function(){
         var data=$('form').serialize();
+        console.log(data)
         $.ajax({
             url:'http://127.0.0.1:8001/login',
             method:'post',
@@ -30,6 +32,7 @@
             dataType:'jsonp',
             success:function(datas){
               alert(datas.message)
+              localStorage.setItem('username',$('[name=userName]').val())
               location.href='http://127.0.0.1:8001'
             },
             error:function(error){

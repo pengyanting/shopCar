@@ -7,17 +7,21 @@
     <title>Document</title>
     <link rel="stylesheet" href="/common.css">
 </head>
+<style>
+
+</style>
 <body>
-     <section>
-        <header>用户注册</header>
-        <section>  
+     <section class='container'>
+        <header class='hd_title'>用户注册</header>
+        <section class='box'>  
           <form>
               <input type="number" name='phone' placeholder="手机号">
               <input type="text" name='checkCode' placeholder="验证码">
               <input type="password" name='password' placeholder="密码">
               <input type="text" name='userName' placeholder="用户名">
-              <input type="button" value='注册'>
+              <input type="button" value='注册' class='btn'>
           </form>
+          <a class='goLogin' href='http://127.0.0.1:8001/login'>已有账号？登录</a>
         </section>
      </section>
 </body>

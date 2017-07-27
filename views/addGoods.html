@@ -6,37 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/common.css">
 </head>
+<style>
+    body {
+        background: #fff;
+    }
+</style>
 
 <body>
+    <header class='head'>
+        <h4>天天购物</h4>
+        <div class='head_right'>
+            <img src="/imgsource/my-head.png" alt="">
+            <span class='username'></span>
+            <input type="button" class='btn logout' value='退出'>
+        </div>
+    </header>
+    <section class='page'>
+        <div class='page-side'>
+            <header>添加商品</header>
+            <section class='addBox'>
+                <form>
+                    <input type="text" name='goodName' placeholder="商品名称">  <br>
+                    <input type="number" name='goodPrice' min='0' placeholder="商品价格"> <br>
+                    <input type="button" value='添加' class='btn'>
+                </form>
+            </section>
+        </div>
+    </section>
     <section>
-        <header>添加商品</header>
-        <section>
-            <form>
-                <input type="text" name='goodName' placeholder="商品名称">
-                <input type="number" name='goodPrice' min='0' placeholder="商品价格">
-                <input type="button" value='添加'>
-            </form>
-        </section>
+
     </section>
 </body>
 <script src='/jquery.js'></script>
 <script>
-    $('[type=button]').click(function(){
-        var data=$('form').serialize();
+    $('.username').html(localStorage.getItem('username'))
+    $('[type=button]').click(function () {
+        var data = $('form').serialize();
         $.ajax({
-            url:'http://127.0.0.1:8001/addGoods',
-            data:data,
-            dataType:'jsonp',
-            method:'post',
-            success:function(data){
+            url: 'http://127.0.0.1:8001/addGoods',
+            data: data,
+            dataType: 'jsonp',
+            method: 'post',
+            success: function (data) {
                 alert(data.message)
-                location.href='http://127.0.0.1:8001/'
+                location.href = 'http://127.0.0.1:8001/'
             },
-            error:function(error){
-              console.log(error)
+            error: function (error) {
+                console.log(error)
             }
         })
     })
+
 </script>
+
 </html>

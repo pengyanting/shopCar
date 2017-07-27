@@ -6,27 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/common.css">
 </head>
+<style>
+    body {
+        background: #fff;
+    }
+</style>
 
 <body>
-    <h1>购物车</h1>
-    <table border="" width='100%'>
-        <thead>
-            <tr>
-                <th>全选<input type="checkbox" name='all'></th>
-                <th>商品名称</th>
-                <th>商品价格</th>
-                <th>数量</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <input type="button" class='compute' value='结算'>
-    <div class='total'>0.00</div>
+    <header class='head'>
+        <h4>天天购物</h4>
+        <div class='head_right'>
+            <img src="/imgsource/my-head.png" alt="">
+            <span class='username'></span>
+            <input type="button" class='btn logout' value='退出'>
+        </div>
+    </header>
+    <section class='page'>
+        <div class='page-side'>
+            <header>
+                <h3>购物车</h3>
+                <div style='display:flex;align-items:center;'>
+                    <input type="button" class='compute btn' value='结算'>
+                    <div class='total'>0.00</div>
+                </div>
+            </header>
+            <table border="" rules=cols width='90%'>
+                <thead>
+                    <tr>
+                        <th>全选<input type="checkbox" name='all'></th>
+                        <th>商品名称</th>
+                        <th>商品价格</th>
+                        <th>数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
 </body>
 <script src='/jquery.js'></script>
 <script>
+    $('.username').html(localStorage.getItem('username'))
     $.ajax({
         url: 'http://127.0.0.1:8001/cartList',
         dataType: 'jsonp',
@@ -65,12 +88,12 @@
                 '<th><input type="checkbox" name="check"/></th>' +
                 '<th>' + results[i].name + '</th>' +
                 '<th class="allPrice">' + results[i].price * results[i].quantity + '</th>' +
-                '<th >' +
+                '<th class="quantityBox">' +
                 '<span class="reduce">-</span>' +
                 '<span class="quantity">' + results[i].quantity + '</span>' +
                 '<span class="add">+</span>' +
                 '</th>' +
-                '<th ><input type="button" id="del" value="删除"/></th>' +
+                '<th ><input type="button" id="del" class="btn" style="margin:10px 0;" value="删除"/></th>' +
                 '</tr>'
         }
         $('tbody').html(str)
@@ -96,7 +119,7 @@
         var cid = obj.parents('tr').attr('data-cid')
         var name = obj.parents('tr').attr('data-name')
         var price = obj.parents('tr').attr('data-price')
-        obj.parent().siblings().eq(2).html(price*newQuantity)
+        obj.parent().siblings().eq(2).html(price * newQuantity)
         total();
         $.ajax({
             url: 'http://127.0.0.1:8001/addCart',
@@ -118,42 +141,48 @@
     }
     $('[name=all]').click(function () {
         var self = $(this);
+
         $('input[name="check"]').each(function () {
             $(this).prop("checked", self.is(':checked'));
         });
         total()
     })
-    function total(){
-        var total=0;
-        $('input[name=check]:checked').each(function(){
-            total+=parseFloat($(this).parent().siblings().eq(1).html())
+    function total() {
+        var total = 0;
+
+        $('input[name=check]:checked').each(function () {
+            total += parseFloat($(this).parent().siblings().eq(1).html())
         })
-        $('.total').html('￥'+total+'.00')
+        $('.total').html('￥' + total + '.00')
     }
-    $('tbody').on('click','[name=check]',function(){
+    $('tbody').on('click', '[name=check]', function () {
         total();
     })
-    $('.compute').click(function(){
-        var id=[];
-        $('input[name=check]:checked').each(function(){
+    $('.compute').click(function () {
+        var id = [];
+        if ($('input[name="check"]:checked').length == 0) {
+            return;
+        }
+        $('input[name=check]:checked').each(function () {
             id.push($(this).parents('tr').attr('data-id'))
-        }) 
+        })
         $.ajax({
-            url:'http://127.0.0.1:8001/compute',
-            data:{
-              id:JSON.stringify(id).replace('[','').replace(']','')
+            url: 'http://127.0.0.1:8001/compute',
+            data: {
+                id: JSON.stringify(id).replace('[', '').replace(']', '')
             },
-            dataType:'jsonp',
-            method:'post',
-            success:function(data){
-              coverHtml(data)
-               $('.total').html('￥0.00')
+            dataType: 'jsonp',
+            method: 'post',
+            success: function (data) {
+                coverHtml(data)
+                $('.total').html('￥0.00')
             },
-            error:function(error){
-              console.log(error)
+            error: function (error) {
+                console.log(error)
             }
         })
     })
+
 </script>
 
 </html>

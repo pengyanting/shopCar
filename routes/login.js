@@ -27,4 +27,11 @@ module.exports = function (app, mysql) {
             res.status(200).jsonp(resData);
         })
     })
+    app.get('/logout',function(req,res){
+        res.clearCookie('id', { path: '/login' });
+        res.status(200).jsonp({
+            message:'success',
+            code:0
+        })
+    })
 }
