@@ -21,9 +21,9 @@ app.get("/", function (req, res) {
     }
 });
 var mysql = mysql.createConnection({
-    host: 'localhost',
+    host: 'rm-uf67944189w34o6pnqo.mysql.rds.aliyuncs.com',
     user: 'root',
-    password: '',
+    password: 'pyt931028!',
     database: 'test'
 });
 
